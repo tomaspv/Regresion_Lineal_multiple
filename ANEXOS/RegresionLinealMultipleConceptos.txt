@@ -1,0 +1,39 @@
+Regresion lineal multiple
+	La idea de este algoritmo es en base a muchas variables independientes lograr predecir una variable dependiente.
+	Es la misma formula que la regresion lineal simple pero con mas variables independientes
+
+	Y = B0 + B1 * X1 + B2 * X2 + . . . . +  Bn * Xn
+
+		Y
+			Variable dependiente
+		XN
+			Variables independientes
+		B0
+			Constante
+			Tambien llamada ordenada al origen (Donde corta el eje X)
+		Bn
+			Coeficientes
+
+	La regresion lineal tiene como "desventaja" que asume a priori cosas que toma como verdaderas por eso hay que checkearlo:
+		1- Linearity
+		2- Homoscedasticity
+		3- Multivariate normality
+		4- Independence of errors
+		5- Lack of multicollinearity
+
+	Dummy variables
+		Al momento de consturir un modelo de regresion lineal tenemos que tener en cuenta que trabaja solamente con variables del tipo numericas (ya sea discreta o continua), en el caso que nos topemos con variables categoricas. Entonces para trabajar estas variables dentro de un modelo de regresion por ejemplo, tenemos que convertir estas variables categoricas en dummy variables.
+		En el caso que utilicemos una variable dummy en la formula aparecera como un nuevo coeficiente "Dn"
+
+		Y = B0 + B1 * X1 + B2 * X2+ ... + B4 * D1 (dummy variable 1)
+
+		OBSERVACION IMPORTANTE: Para saber cuantas variables dummies debo tener en consideracion como maximo a la hora de utilizar en un modelo, lo que debemo hacer es CANTIDAD_VARIABLES_DUMMY - 1 (Si, le resto uno al valor total y eso es lo maximo que puedo usar para trabajar en un modelo)
+
+	Conceptos importantes
+
+	+Multicolinearidad
+		Concepto que dice que a partir de una variable puedo calcular otra. Ejemplo el complemento de una variable. Escenario: Tengo una variable dummy New York y otra California. Al momento de utilizar un algoritmo de regresion, en la formula solamente voy a dejar una de las dos variables, esto por que es asi? porque si yo calculo una y luego hago su complemento ya obtengo sus datos.
+	+Pvalue
+		P value is a statistical measure that helps scientists determine whether or not their hypotheses are correct. P values are used to determine whether the results of their experiment are within the normal range of values for the events being observed. Usually, if the P value of a data set is below a certain pre-determined amount (like, for instance, 0.05), scientists will reject the "null hypothesis" of their experiment - in other words, they'll rule out the hypothesis that the variables of their experiment had no meaningful effect on the results [https://www.wikihow.com/Calculate-P-Value]
+
+		como calcular y leer el Pvalue [https://www.wikihow.com/Calculate-P-Value]
