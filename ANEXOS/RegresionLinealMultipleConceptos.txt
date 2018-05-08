@@ -14,6 +14,57 @@ Regresion lineal multiple
 		Bn
 			Coeficientes
 
+	Como construir un modelo
+		Al momento de construir un modelo de regresion lineal, debemos saber con que variables independientes/predictoras ("X") vamos a trabajar. Recordemos que el modelo de regresion lineal simple solamente tenemos dos variables: una "X" y otra "Y" por lo que no tenemos ningun problema a la hora de aplicar el modelo.
+		Ahora bien, cuando queremos usar un modelo de regresion lineal multiple lo que debemos tener en cuenta son las variables independientes que debemos utilizar. Porque es importante saber con que variables vamos a trabajar? por el hecho que mientras mas variables utilicemos mas "garbage" va a poseer el modelo y tambien hay que verlo por el lado que una vez ejecutado el modelo, los resultados los debemos interpretar y explicar; por ello mientras mas variables tenga mas dificil de entender para luego explicarlo sera.
+		Entonces para elegir las variables vamos a utilizar un framework el cual establece 5 metodos para la construccion de un modelo:
+		1 - ALL IN
+				Pior knowledge
+					conocemos mucho del negocio y sabemos que esas variables tienen que ir si o si.
+				You have to
+					Cuando los directivos establecen que si o si tiene que ir esas variables.
+				Preparing for backward elimination
+					Utilizamos este metodo cuando vamos a utilizar el backward elimination (metodo 2). Entonces antes de utilizarlo, lo preparamos con el metodo all in.
+
+		2 - BACKWARD ELIMINATION
+			Consta de una serie de pasos - 5 en total
+				1 - Establecemos un nivel de significado para mantener en el modelo. Podemos establecer un SL = 0.05 (SL = Significance level)
+				2 - Encajamos (fit) el modelo con todas las posibles variables.
+				3 - Consideramos el predictor (variable independiente) con el valor mas alto de P-value
+					3 . 1 - En el caso que el Pvalue > SL vamos al paso 4, caso contrario se termina aca el proceso.
+				4 - Removemos aquellas variables predictoras con nivel de Pvalue > SL
+				5 - Encajamos (fit) el modelo nuevamente pero sacando aquellas variables que removimos en el punto 4.
+					5 . 1 - Una vez que ejecutamos el paso 5 y se termina de procesar, volvemos al punto 3 e iteramos hasta que Pvalue <= SL
+
+		3 - FORWARD SELECTION
+			Consta de una serie de pasos - 4 en total
+				1 - Establecemos un nivel de significado para mantener en el modelo. Podemos establecer un SL = 0.05 (SL = Significance level) 
+				2 - Ajustamos (fit) todos los modelos de regresion simple utilizando todas las variables predictoras/independientes y nos quedamos con el que posea el menor Pvalue de ellos.
+				3 - Con la variable obtenida en el punto anterior, creamos un nuevo modelo y lo fitiamos (fit) que conste de la variable obtenida en el paso 2 y voy a crear todos los modelos posibles agregandole una variable mas. Entonces me va a quedar un modelo con la variable con el menor Pvalue + una nueva variable que agregue de las que teniamos.
+				4 - Nos quedamos con el predictor (variable independiente) que posea el menor Pvalue.
+					4 . 1 - En el caso que Pvalue < SL vamos al paso 3 e iteramos. Caso contrario se termina el proceso Pvalue >= SL.
+
+		4 - BIDIRECTIONAL ELIMINATION / STEPWISE REGRESSION
+			Consta de una serie de pasos - 4 en total.
+			Se lo puede pensar como una mezcla entre backward elimination y forward selection
+				1 - Vamos a seleccionar dos valores, por un lado el SLENTER (significance level to enter) y por otro el SLSTAY (significance leve to stay).
+				2 - Llevamos a cabo el procedimiento de forward selection - las nuevas variables deben cumplir con Pvalue < SLENTER para entrar al modelo. EN ESTE CASO VOY AUMENTANDO SOLO DE A UNA VARIABLE. ESTO SIGNIFICA QUE HAGO SOLO UN PASO DEL FORWARD SELECTION
+				3 - Llevamos a cabo el procedimiento de Backward elimination - las variables viejas deben cumplir con Pvalue < SLSTAY para quedarse. EN ESTE CASO HAGO TODOS LOS PASOS DEL PROCESO DE BACKWARD ELIMINATION
+				4 - Va a llegar un momento que variables nuevas no pueden entrar y variables viejas no pueden salir. Fin
+
+		5 - SCORE COMPARISON
+			Consta de una serie de pasos - 3 en total
+				1 - Seleccionamos un criterio de "goodness of fit" (AKAIKE CRITERION/ R2)
+				2 - Construimos todos los modelos posibles de regresion 2^n - 1 combinaciones totales.
+				3 - Seleccionamos aquel con el mejor criterio
+
+		Obs: Los pasos 2,3,4 juntos se los conoce como STEPWISE REGRESSION (tambien el paso 4, que incluye implicitamente al paso 2 y 3; se lo llama stepwise regression)
+		ObsII:
+			The Akaike information criterion (AIC) is an estimator of the relative quality of statistical models for a given set of data. Given a collection of models for the data, AIC estimates the quality of each model, relative to each of the other models. Thus, AIC provides a means for model selection.
+			AIC does not provide a test of a model in the sense of testing a null hypothesis. It tells nothing about the absolute quality of a model, only the quality relative to other models. Thus, if all the candidate models fit poorly, AIC will not give any warning of that.  [https://en.wikipedia.org/wiki/Akaike_information_criterion]
+
+
+
 	La regresion lineal tiene como "desventaja" que asume a priori cosas que toma como verdaderas por eso hay que checkearlo:
 		1- Linearity
 		2- Homoscedasticity
@@ -37,3 +88,90 @@ Regresion lineal multiple
 		P value is a statistical measure that helps scientists determine whether or not their hypotheses are correct. P values are used to determine whether the results of their experiment are within the normal range of values for the events being observed. Usually, if the P value of a data set is below a certain pre-determined amount (like, for instance, 0.05), scientists will reject the "null hypothesis" of their experiment - in other words, they'll rule out the hypothesis that the variables of their experiment had no meaningful effect on the results [https://www.wikihow.com/Calculate-P-Value]
 
 		como calcular y leer el Pvalue [https://www.wikihow.com/Calculate-P-Value]
+
+
+
+	Tips para evaluar un modelo de regresion lineal:
+		Observacion: Esto aplica para variables del tipo CONTINUAS.
+		The sklearn.metrics module implements several loss, score, and utility functions to measure regression performance. Some of those have been enhanced to handle the multioutput case: mean_squared_error, mean_absolute_error, explained_variance_score and r2_score. [http://scikit-learn.org/stable/modules/model_evaluation.html#r2-score-the-coefficient-of-determination]
+
+	MAE VS MSE --> [https://medium.com/human-in-a-machine-world/mae-and-rmse-which-metric-is-better-e60ac3bde13d]
+
+	*mean_absolute_error
+		mean_absolute_error(y_true, y_pred)
+		Es la diferencia entre dos variables continuas.
+		Lo podemos pensar como la comparacion entre lo predicho y lo observado realmente.
+		Obs:Teniendo los errores observados se calcula su media (MSE) y la desviación estándar de los errores (RMSE). Se puede considerar que la media propuesta es mejor si el RMSE es menor.
+
+	*mean_squared_error
+		mean_square_error(y_true, y_pred)
+		Es como el mean_absolute_error pero al cuadrado. La diferencia con MAE es que al error le da mas peso.
+		
+	*explained_variance_score
+		explained_variance_score(y_true, y_pred) 
+		The best possible score is 1.0, lower values are worse.
+		Evalua la calidad de la regresion como asi tambien la distribucion de las variables dependientes.
+		Es una medida de dispersion de los datos que estoy analizando.
+
+		
+	*r2_score.
+		Tambien conocido como coeficiente de determinacion.
+		Mientras mas se acerque a 1 significara que las variables tienen una alta correlacion.
+		Se lo puede razonar como la proporcion de la varianza de la variable dependiente "Y" que es predicha por la o las variables independientes "X"
+		It provides a measure of how well observed outcomes are replicated by the model, based on the proportion of total variation of outcomes explained by the model
+	
+
+
+
++codigo:
+
+Backward Elimination with p-values only:
+
+import statsmodels.formula.api as sm
+def backwardElimination(x, sl):
+    numVars = len(x[0])
+    for i in range(0, numVars):
+        regressor_OLS = sm.OLS(y, x).fit()
+        maxVar = max(regressor_OLS.pvalues).astype(float)
+        if maxVar > sl:
+            for j in range(0, numVars - i):
+                if (regressor_OLS.pvalues[j].astype(float) == maxVar):
+                    x = np.delete(x, j, 1)
+    regressor_OLS.summary()
+    return x
+ 
+SL = 0.05
+X_opt = X[:, [0, 1, 2, 3, 4, 5]]
+X_Modeled = backwardElimination(X_opt, SL)
+
+
+Backward Elimination with p-values and Adjusted R Squared:
+
+import statsmodels.formula.api as sm
+def backwardElimination(x, SL):
+    numVars = len(x[0])
+    temp = np.zeros((50,6)).astype(int)
+    for i in range(0, numVars):
+        regressor_OLS = sm.OLS(y, x).fit()
+        maxVar = max(regressor_OLS.pvalues).astype(float)
+        adjR_before = regressor_OLS.rsquared_adj.astype(float)
+        if maxVar > SL:
+            for j in range(0, numVars - i):
+                if (regressor_OLS.pvalues[j].astype(float) == maxVar):
+                    temp[:,j] = x[:, j]
+                    x = np.delete(x, j, 1)
+                    tmp_regressor = sm.OLS(y, x).fit()
+                    adjR_after = tmp_regressor.rsquared_adj.astype(float)
+                    if (adjR_before >= adjR_after):
+                        x_rollback = np.hstack((x, temp[:,[0,j]]))
+                        x_rollback = np.delete(x_rollback, j, 1)
+                        print (regressor_OLS.summary())
+                        return x_rollback
+                    else:
+                        continue
+    regressor_OLS.summary()
+    return x
+ 
+SL = 0.05
+X_opt = X[:, [0, 1, 2, 3, 4, 5]]
+X_Modeled = backwardElimination(X_opt, SL)

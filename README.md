@@ -3,8 +3,8 @@
 - **Tema**: Regresion Lineal Multiple
 - **Lenguaje utilizado**: Python
 - **Dataset**:
-  - TODOa. `Source: Fuente: TODO`
-- **Comentarios**: TODO
+  - El data set contiene datos correspondientes a observaciones del clima del pais Australia . `Source: Fuente: https://www.kaggle.com/jsphyg/weather-dataset-rattle-package/data`
+- **Comentarios**: Utilizando el algoritmo de machine learning de Regresion Lineal vamos a calcular a partir de diferentes observaciones si va a llover o no en Australia..
 - **Estructura del proyecto**:
   - **SRC**: Carpeta con la codificacion del proyecto.
   - **DOC**: Carpeta que contendra el analisis funcional sobre el proyecto llevado a cabo.
